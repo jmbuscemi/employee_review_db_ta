@@ -182,4 +182,43 @@ class ReviewsTest < Minitest::Test
     assert_equal s, b.department
   end
 
+  def test_employee_count
+    a = Employee.create(name: "A", salary: 100)
+    b = Employee.create(name: "B", salary: 200)
+    m = Department.create(name: "Marketing")
+    s = Department.create(name: "Sales")
+
+    m.add_employee(a)
+    m.add_employee(b)
+
+    assert_equal 2, m.employee_count
+    assert_equal 0, s.employee_count
+  end
+
+  def test_lowest_paid_employee
+    a = Employee.create(name: "A", salary: 100)
+    b = Employee.create(name: "B", salary: 200)
+    m = Department.create(name: "Marketing")
+
+    m.add_employee(a)
+    m.add_employee(b)
+
+    assert_equal a, m.lowest_paid_employee
+  end
+
+  def test_sorted_employees
+    z = Employee.create(name: "Zeke", salary: 100)
+    a = Employee.create(name: "A", salary: 100)
+    b = Employee.create(name: "B", salary: 200)
+
+    m = Department.create(name: "Marketing")
+
+    m.add_employee(z)
+    m.add_employee(a)
+    m.add_employee(b)
+
+    assert_equal [a, b, z], m.sorted_employees
+  end
+
+
 end

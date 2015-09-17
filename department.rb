@@ -26,4 +26,18 @@ class Department < ActiveRecord::Base
       new_department.add_employee(e)
     end
   end
+
+  def employee_count
+    employees.count
+  end
+
+  def lowest_paid_employee
+    employees.order(:salary).first
+  end
+
+  def sorted_employees
+    employees.order(:name)
+  end
+
+
 end
