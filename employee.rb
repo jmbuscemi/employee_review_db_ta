@@ -1,32 +1,26 @@
-class Employee
+require 'active_record'
 
-  attr_reader :name, :salary
+ActiveRecord::Base.establish_connection(
+  adapter: 'sqlite3',
+  database: 'development.sqlite3'
+)
 
-  def initialize(name:, salary:, email: nil, phone: nil)
-    @name = name
-    @salary = salary
-    @email = email
-    @phone = phone
-    @reviews = []
-    @satisfactory = true
-  end
-
-  def recent_review
-    @reviews.last
-  end
+class Employee < ActiveRecord::Base
+  belongs_to :department
+  has_many :reviews
 
   def satisfactory?
-    @satisfactory
+    satisfactory
   end
 
   def give_raise(amount)
-    @salary += amount
+    self.salary += amount
   end
 
   def give_review(review)
-    @reviews << review
+    reviews << review
     assess_performance
-    true
+    save
   end
 
   def assess_performance
@@ -35,9 +29,19 @@ class Employee
     good_terms = Regexp.union(good_terms)
     bad_terms = Regexp.union(bad_terms)
 
-    count_good = @reviews.last.scan(good_terms).length
-    count_bad = @reviews.last.scan(bad_terms).length
+    good_count = reviews.inject(0){ |sum, r| r.review.scan(good_terms).length}
+    bad_count = reviews.inject(0){ |sum, r| r.review.scan(bad_terms).length}
 
-    @satisfactory = (count_good - count_bad > 0)
+    self.satisfactory = (good_count - bad_count > 0)
   end
+
+  def self.overpaid
+    total = 0
+    self.all.each do |e|
+      total += e.salary
+    end
+    average = total /self.count
+    self.where(["salary > ?", average])
+  end
+
 end
