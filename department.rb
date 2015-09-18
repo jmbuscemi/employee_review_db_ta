@@ -39,5 +39,8 @@ class Department < ActiveRecord::Base
     employees.order(:name)
   end
 
+  def self.biggest
+    joins(:employees).group(:department_id).order("count(employees.id) DESC").first
+  end
 
 end

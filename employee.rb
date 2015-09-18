@@ -14,7 +14,11 @@ class Employee < ActiveRecord::Base
   end
 
   def give_raise(amount)
-    self.salary += amount
+    update(salary: self.salary + amount)
+  end
+
+  def give_raise_percent(percent)
+    update(salary: self.salary * (1 + percent.to_f/100))
   end
 
   def give_review(review)
@@ -42,6 +46,14 @@ class Employee < ActiveRecord::Base
     end
     average = total /self.count
     self.where(["salary > ?", average])
+  end
+
+  def self.palindromes
+    self.all.select {|e| e.name == e.name.reverse}
+  end
+
+  def self.raise_all_satisfactory
+    self.where(satisfactory: true).all.each {|e| e.give_raise_percent(10)}
   end
 
 end

@@ -220,5 +220,39 @@ class ReviewsTest < Minitest::Test
     assert_equal [a, b, z], m.sorted_employees
   end
 
+  def test_palindrome_employees
+    a = Employee.create( name: "amy", salary: 100)
+    b = Employee.create( name: "bob", salary: 200)
+    c = Employee.create( name: "christen", salary: 300)
+    d = Employee.create( name: "dad", salary: 400)
+
+    assert_equal [b, d], Employee.palindromes
+  end
+
+  def test_most_employees
+    a = Employee.create(name: "A", salary: 100)
+    b = Employee.create(name: "B", salary: 200)
+
+    m = Department.create(name: "Marketing")
+    s = Department.create(name: "Sales")
+
+    s.add_employee(a)
+    s.add_employee(b)
+
+    assert_equal s, Department.biggest
+  end
+
+  def test_give_all_satisfactory_raises
+    employee = Employee.create( name: "Joanna", email: "jdark@example.com", phone: "515-888-4821", salary: 80000)
+    employee2 = Employee.create( name: "Lunk", email: "lunk@example.com", phone: "882-329-3843", salary: 150000)
+    review = Review.create(review: "bad negative less")
+    employee2.give_review(review)
+
+    Employee.raise_all_satisfactory
+
+    assert_equal 88000, employee.reload.salary
+    assert_equal 150000, employee2.reload.salary
+  end
+
 
 end
