@@ -3,14 +3,8 @@
 ## Description
 
 Modify an existing Employee Reviews program to persist the information in a database.  Modify the test suite to utilize the database as well.
-<!--
-## Normal Mode
 
-Simply put, modify this existing Employee Reviews code to store all instance variables in Employee and Department objects to the database.  In addition, modify the test suite so that all existing tests pass given the new persistent data store.
-
-One tricky part will be the array of employees stored in each department.  Rather than trying to make an "Array" type data field (which only works in a few database management systems anyway), add a foreign key to the employees table which points to a department in the departments table.
-
-Write these additional methods on your models:
+Use Test Drive Development to write additional methods were written to:
 
 * Return the total number of employees in a department.
 * Return the employee who is being paid the least in a department.
@@ -21,9 +15,8 @@ Write these additional methods on your models:
 * Move everyone from one department to another department.
 * Give a raise of 10% to ALL employees with good reviews.  This is different from the raise method which already exists, and also needs to operate over all employees of ALL departments.
 
-DON'T FORGET TEST-DRIVEN DEVELOPMENT.  Write a test for each one of these first, make sure the test FAILS, then write code to make it pass, then refactor as needed.  Finally, commit.  Then repeat until you complete all the additional methods.
 
-## Hard Mode
+<!-- ## Hard Mode
 
 Write additional migrations to accomplish the following.  Make sure they run successfully on your original database (with real data in multiple rows in both tables).
 
